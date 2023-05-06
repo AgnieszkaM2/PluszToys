@@ -1,0 +1,43 @@
+
+.home-sidebar {
+    float:left;
+    width: 40vh;
+    height: 100vh;
+    border-right: 2px solid #546E7A;
+    background-image: url('../assests/tlo5.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: white;
+
+}
+
+.home-sidebar ul{
+    list-style: none;
+    padding-left: 1%;
+    margin-left: 1%;
+}
+.home-sidebar li{
+    margin-bottom: 5%;
+}
+
+.home-sidebar li:hover{
+    background-color: rgba(255, 255, 255, 0.259);
+    transform: scale(1.03);
+}
+
+#btn1 {
+    text-align: center;
+    font-size: 28px;
+    background-color: transparent;
+    outline: none;
+    color:white;
+    border: 0px;
+    width:25vh;
+    margin-left: 5%;
+
+}
+#btn1 img{
+    float: left;
+    width:20%;
+    height:20%;
+}
