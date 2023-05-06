@@ -1,0 +1,56 @@
+.mainInputStyle {
+    border-radius: 10px;
+    height: 50px;
+    background: #bdd4de;
+  }
+
+.form {
+    display: grid;
+    margin: 40px;
+    width: 433px;
+  }
+  
+  input {
+    padding-left: 75px;
+    width: 358px;
+  }
+  
+  .input {
+    border: 3px solid #546E7A;
+    margin-top: 20px;
+    font-size: medium;
+    
+  }
+
+  .input:focus {
+    border: 3px solid #0058e3;
+  }
+
+
+  .loginBtn {
+    border: 3px solid #52735a;
+    margin-top: 50px;
+    font-size: medium;
+    color: #52735a;
+    cursor: pointer;
+  }
+
+  .loginBtn:hover {
+    background-color: #52735a;
+    color: white;
+  }
+
+  .icon {
+    position: absolute;
+    margin-top: 30px;
+    margin-left: 20px;
+  }
+
+  .user {
+    filter: invert(80%);
+  }
+
+  .pass {
+    filter: invert(20%);
+    width: 32px;
+  }
