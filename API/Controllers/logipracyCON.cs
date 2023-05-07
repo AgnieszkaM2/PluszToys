@@ -69,7 +69,7 @@ namespace Api.Controllers
         }
 
         // GET api/<logipracyCON>/5
-        [HttpPut("nowy_pracownik")]
+        [HttpPut("ins_godziny")]
         public void Put(int id, int godziny)
         {
             SqlConnection _conn = new SqlConnection(_configuration.GetConnectionString("magazyn").ToString());
