@@ -77,7 +77,17 @@ id int IDENTITY(1,1) PRIMARY KEY,
 p_desc varchar(50)
 );
 
+insert into pracownicy (imie,nazwisko,haslo,stanowisko) values('test2','tes','test2',4); 
+
 alter table produkt add FOREIGN key (typ) REFERENCES type_p(id);
 
+alter table logipracy add FOREIGN key (id_pra) REFERENCES pracownicy(id_pra);
 
+insert into logipracy (id_pra, iloscgodzin) values (2,5);
+insert into logipracy (id_pra, iloscgodzin) values (2,2);
+insert into logipracy (id_pra, iloscgodzin) values (4,4);
+insert into logipracy (id_pra,insdate , iloscgodzin) values (2,GETDATE()-9 ,4);
+
+
+update stanowisko set pensja = 100 where id_stanowisko = 3;
 
