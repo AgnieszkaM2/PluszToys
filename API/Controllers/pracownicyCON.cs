@@ -90,7 +90,7 @@ namespace Api.Controllers
             }
         }
         // GET api/<pracownicyCON>/5
-        [HttpGet("where {id}")]
+        [HttpGet("where{id}")]
         public string Get(int id)
         {
             SqlConnection _conn = new SqlConnection(_configuration.GetConnectionString("magazyn").ToString());
@@ -127,7 +127,7 @@ namespace Api.Controllers
         }
 
         // PUT api/<pracownicyCON>/5
-        [HttpPut("insert pracownik")]
+        [HttpPut("nowy_pracownik")]
         public void Put(string imie, string nazwisko, int stanowisko)
         {
             SqlConnection _conn = new SqlConnection(_configuration.GetConnectionString("magazyn").ToString());
@@ -143,7 +143,7 @@ namespace Api.Controllers
         }
 
         // DELETE api/<pracownicyCON>/5
-        [HttpDelete("delete {id}")]
+        [HttpDelete("zwolnienie{id}")]
         public void Delete(int id)
         {
             SqlConnection _conn = new SqlConnection(_configuration.GetConnectionString("magazyn").ToString());
@@ -157,12 +157,26 @@ namespace Api.Controllers
             _conn.Close();
         }
         // update api/<pracownicyCON>/6
-        [HttpPut("update {id}")]
+        [HttpPut("zmiana_stanowisko {id}")]
         public void zmianastanowiska(int id, int stanowisko)
         {
             SqlConnection _conn = new SqlConnection(_configuration.GetConnectionString("magazyn").ToString());
 
             string query = $"update pracownicy set stanowisko = {stanowisko} where pracownicy.id_pra = {id}";
+
+            _conn.Open();
+            SqlDataAdapter sqlDataAdapter = new SqlDataAdapter();
+            sqlDataAdapter.UpdateCommand = new SqlCommand(query, _conn);
+            sqlDataAdapter.UpdateCommand.ExecuteNonQuery();
+            _conn.Close();
+        }
+        // update api/<pracownicyCON>/7
+        [HttpPut("update_password_id,starehaslo,nowehaslo")]
+        public void zmianahasla(int id, string starehaslo,string nowehaslo)
+        {
+            SqlConnection _conn = new SqlConnection(_configuration.GetConnectionString("magazyn").ToString());
+
+            string query = $"update pracownicy set haslo = '{nowehaslo}' where id_pra = {id} and haslo = '{starehaslo}'";
 
             _conn.Open();
             SqlDataAdapter sqlDataAdapter = new SqlDataAdapter();

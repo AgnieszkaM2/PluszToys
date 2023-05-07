@@ -2270,11 +2270,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\sudiastrikeagain\\C#\\Api\\Api.csproj",
+      "projectUniqueName": "C:\\Users\\raury\\Source\\Repos\\PluszToys\\API\\Api.csproj",
       "projectName": "Api",
-      "projectPath": "C:\\sudiastrikeagain\\C#\\Api\\Api.csproj",
+      "projectPath": "C:\\Users\\raury\\Source\\Repos\\PluszToys\\API\\Api.csproj",
       "packagesPath": "C:\\Users\\raury\\.nuget\\packages\\",
-      "outputPath": "C:\\sudiastrikeagain\\C#\\Api\\obj\\",
+      "outputPath": "C:\\Users\\raury\\Source\\Repos\\PluszToys\\API\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

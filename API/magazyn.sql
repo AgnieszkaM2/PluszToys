@@ -69,4 +69,15 @@ INSERT INTO stanowisko (nazwa,pensja,lvl_dostepu)
 
 insert into pracownicy (imie,nazwisko,haslo,stanowisko) values('test','test','test',3); 
 
+-- ADDED 07.05.2023
+alter table produkt add typ int;
+
+create table type_p(
+id int IDENTITY(1,1) PRIMARY KEY, 
+p_desc varchar(50)
+);
+
+alter table produkt add FOREIGN key (typ) REFERENCES type_p(id);
+
+
 

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "nueKozaszlkLrMgsaoCsjwseAit0WX/MYxVUwiE3Gc0MQZJlJQS3+1RZDQH/SaWYyg+hV+I6y/mVm7QZdVly7g==",
+  "dgSpecHash": "L/r8em2knassUDAJ8h4Iva7pA9/HhVZw5U/ltnQw7q2wLdV61W80ZUH9PjnP4l0xe5Kq9MccjPsHO1ZwkBqSyg==",
   "success": true,
-  "projectFilePath": "C:\\sudiastrikeagain\\C#\\Api\\Api.csproj",
+  "projectFilePath": "C:\\Users\\raury\\Source\\Repos\\PluszToys\\API\\Api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\raury\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\raury\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
