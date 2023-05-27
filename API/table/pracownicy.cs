@@ -6,8 +6,6 @@
        
        public string imie           { get; set; }
        
-       public string nazwisko       { get; set; }
-       
        public int stanowisko        { get; set; }
 
        public string stanowiskostr { get; set; }

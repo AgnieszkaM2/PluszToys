@@ -91,3 +91,54 @@ insert into logipracy (id_pra,insdate , iloscgodzin) values (2,GETDATE()-9 ,4);
 
 update stanowisko set pensja = 100 where id_stanowisko = 3;
 
+-- added 27.05.2023
+alter table pracownicy drop column nazwisko;
+alter table zama drop column typ;
+alter table zama drop column startorder;
+
+alter table listazamwie add stan int;
+alter table listazamwie add typ_plusza int;
+
+alter table zama add stan int;
+alter table zama add FOREIGN key (stan) REFERENCES stan_zam(id);
+
+create table typ_plusz (
+id int IDENTITY(1,1) PRIMARY KEY, 
+p_desc varchar(50)
+);
+alter table listazamwie add FOREIGN key (typ_plusza) REFERENCES typ_plusz(id);
+
+create table stan_zam (
+id int IDENTITY(1,1) PRIMARY KEY, 
+p_desc varchar(50)
+);
+alter table listazamwie add FOREIGN key (stan) REFERENCES stan_zam(id);
+
+alter table listazamwie add FOREIGN key (stan) REFERENCES stan_zam(id);
+
+insert into typ_plusz (p_desc) values ('Kot');
+insert into typ_plusz (p_desc) values ('Pies');
+insert into typ_plusz (p_desc) values ('S³oñ');
+insert into typ_plusz (p_desc) values ('Miœ');
+
+insert into type_p (p_desc) values ('material');
+insert into type_p (p_desc) values ('wypelnienie');
+insert into type_p (p_desc) values ('oczy');
+
+insert into stan_zam (p_desc) values ('start');		--1 
+insert into stan_zam (p_desc) values ('w trakcie');	--2
+insert into stan_zam (p_desc) values ('koniec');	--3
+insert into stan_zam (p_desc) values ('anulowane');	--4
+
+drop table magazyn;
+
+alter table zama drop column nr_zam;
+
+alter table listazamwie add FOREIGN key (nr_zam) REFERENCES zama(id_zam);
+
+
+
+
+
+
+

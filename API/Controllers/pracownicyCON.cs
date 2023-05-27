@@ -42,7 +42,6 @@ namespace Api.Controllers
                     pracownicy.data_zatr = Convert.ToDateTime(row["data_zatr"]);
                     pracownicy.imie = Convert.ToString(row["imie"]);
                     pracownicy.stanowiskostr = Convert.ToString(row["stanowisko"]);
-                    pracownicy.nazwisko = Convert.ToString(row["nazwisko"]);
                     pracownicylist.Add(pracownicy);
                 }
 
@@ -58,11 +57,11 @@ namespace Api.Controllers
         }
         // GET: api/<pracownicyCON>
         [HttpGet("login")]
-        public string login(string imie,string nazwisko, string haslo )
+        public string login(string login, string haslo )
         {
             SqlConnection _conn = new SqlConnection(_configuration.GetConnectionString("magazyn").ToString());
 
-            string query = $"select id_pra, stanowisko from pracownicy where imie='{imie}' and nazwisko='{nazwisko}' and haslo = '{haslo}'";
+            string query = $"select id_pra, stanowisko from pracownicy where imie='{login}' and haslo = '{haslo}'";
 
             SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(query, _conn);
 
@@ -89,50 +88,13 @@ namespace Api.Controllers
                 return JsonConvert.SerializeObject(null);
             }
         }
-        // GET api/<pracownicyCON>/5
-        [HttpGet("where{id}")]
-        public string Get(int id)
-        {
-            SqlConnection _conn = new SqlConnection(_configuration.GetConnectionString("magazyn").ToString());
-
-            string query = $"select * from pracownicy join stanowisko on stanowisko.id_stanowisko = pracownicy.stanowisko where pracownicy.id_pra = {id}";
-
-            SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(query, _conn);
-
-            DataTable dt = new DataTable();
-            sqlDataAdapter.Fill(dt);
-            List<pracownicy> pracownicylist = new List<pracownicy>();
-            if (dt.Rows.Count > 0)
-            {
-                foreach (DataRow row in dt.Rows)
-                {
-                    pracownicy pracownicy = new pracownicy();
-                    pracownicy.id_pra = Convert.ToInt16(row["id_pra"]);
-                    pracownicy.data_zatr = Convert.ToDateTime(row["data_zatr"]);
-                    pracownicy.imie = Convert.ToString(row["imie"]);
-                    pracownicy.stanowiskostr = Convert.ToString(row["stanowisko"]);
-                    pracownicy.nazwisko = Convert.ToString(row["nazwisko"]);
-                    pracownicylist.Add(pracownicy);
-                }
-
-            }
-            if (pracownicylist.Count > 0)
-            {
-                return JsonConvert.SerializeObject(pracownicylist);
-            }
-            else
-            {
-                return JsonConvert.SerializeObject(null);
-            }
-        }
-
         // PUT api/<pracownicyCON>/5
         [HttpPut("nowy_pracownik")]
-        public void Put(string imie, string nazwisko, int stanowisko)
+        public void Put(string login, int stanowisko)
         {
             SqlConnection _conn = new SqlConnection(_configuration.GetConnectionString("magazyn").ToString());
 
-            string query = $"insert into pracownicy (imie,nazwisko,stanowisko) values('{imie}','{nazwisko}',{stanowisko})";
+            string query = $"insert into pracownicy (imie,stanowisko) values('{login}',{stanowisko})";
 
             _conn.Open();
             SqlDataAdapter sqlDataAdapter = new SqlDataAdapter();
@@ -171,7 +133,7 @@ namespace Api.Controllers
             _conn.Close();
         }
         // update api/<pracownicyCON>/7
-        [HttpPut("update_password_id,starehaslo,nowehaslo")]
+        [HttpPut("update_password")]
         public void zmianahasla(int id, string starehaslo,string nowehaslo)
         {
             SqlConnection _conn = new SqlConnection(_configuration.GetConnectionString("magazyn").ToString());
