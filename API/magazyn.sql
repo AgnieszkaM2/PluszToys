@@ -96,8 +96,11 @@ alter table pracownicy drop column nazwisko;
 alter table zama drop column typ;
 alter table zama drop column startorder;
 
+alter table produkt drop column wielosc;
+
 alter table listazamwie add stan int;
 alter table listazamwie add typ_plusza int;
+alter table listazamwie add wielkosc varchar(3);
 
 alter table zama add stan int;
 alter table zama add FOREIGN key (stan) REFERENCES stan_zam(id);
@@ -130,15 +133,20 @@ insert into stan_zam (p_desc) values ('w trakcie');	--2
 insert into stan_zam (p_desc) values ('koniec');	--3
 insert into stan_zam (p_desc) values ('anulowane');	--4
 
+insert into produkt (nazwa,typ) values ('materia³1',1)
+insert into produkt (nazwa,typ) values ('wype³nienie1',2)
+insert into produkt (nazwa,typ) values ('guzik1',3)
+insert into produkt (nazwa,typ) values ('materia³2',1)
+insert into produkt (nazwa,typ) values ('wype³nienie2',2)
+insert into produkt (nazwa,typ) values ('guzik2',3)
+insert into produkt (nazwa,typ) values ('materia³3',1)
+insert into produkt (nazwa,typ) values ('wype³nienie3',2)
+insert into produkt (nazwa,typ) values ('guzik3',3)
+
+
 drop table magazyn;
 
 alter table zama drop column nr_zam;
-
 alter table listazamwie add FOREIGN key (nr_zam) REFERENCES zama(id_zam);
 
-
-
-
-
-
-
+alter table listazamwie drop column aktilosc;
