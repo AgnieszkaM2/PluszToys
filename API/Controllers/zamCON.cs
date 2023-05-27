@@ -23,7 +23,7 @@ namespace Api.Controllers
         }
 
         // POST api/<zamCON>/1
-        [HttpPost("{klient}")]
+        [HttpPost("klient")]
         public void new_zam(string klient)
         {
             SqlConnection _conn = new SqlConnection(_configuration.GetConnectionString("magazyn").ToString());
@@ -38,7 +38,7 @@ namespace Api.Controllers
         }
 
         // POST api/<zamCON>/2
-        [HttpPost("{zamline}")]
+        [HttpPost("zamline")]
         public void new_zam_l(int nr_zam, string material, string wypelnienie, string oczy, int ilosc , int typ_plusza, string wielkosc)
         {
             SqlConnection _conn = new SqlConnection(_configuration.GetConnectionString("magazyn").ToString());
