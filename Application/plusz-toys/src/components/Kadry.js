@@ -5,6 +5,7 @@ import ic2 from '../assests/icons8-filter-50.png';
 import ic3 from '../assests/icons8-timeline-week-48.png';
 import ic4 from '../assests/icons8-time-machine-48.png';
 import React, {Component} from 'react';
+import {useState} from 'react';
 
 export class Kadry extends Component{
     constructor(props) {
@@ -24,7 +25,11 @@ export class Kadry extends Component{
             lvl_dostepu: 0,
 
             logi: [],
-            wyplata: ""
+            wyplata: "",
+
+            isAddModal:false,
+            isStanModal:false,
+            isEditModal:false
 
         }
     }
@@ -50,9 +55,49 @@ export class Kadry extends Component{
             });
     }
     
+    changeEmployeeName = (e) => {
+        this.setState({ imie: e.target.value });
+    }
+    changeEmployeeStan = (e) => {
+        console.log("select value: "+ e.target.value);
+        console.log("prev value: "+ this.state.id_stanowisko);
+        this.setState({ id_stanowisko: e.target.value });
+    }
+    changeStanowisko = (e) => {
+        this.setState({ stanowisko: e.target.value });
+    }
+    changeIdStanowisko = (e) => {
+        this.setState({ id_stanowisko: e.target.value });
+    }
+    refreshPage() {
+        window.location.reload(false);
+    }
 
     addEmployee() {
+        fetch('https://localhost:7223/api/pracownicyCON/nowy_pracownik?login='+ this.state.imie +'&stanowisko='+ this.state.id_stanowisko, {
+            method: 'PUT'
+        })
+            .then(res => res.json());
+            
 
+        this.setState({imie: "", id_stanowisko:0});
+        this.refreshPage();
+    }
+
+    deleteClick(id) {
+        if (window.confirm('Czy na pewno chcesz usunąć pracownika?')) {
+            fetch('https://localhost:7223/api/pracownicyCON/zwolnienie' + id, {
+                method: 'DELETE',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(res => res.json());
+
+            
+            this.refreshPage();    
+        }
     }
 
     getStanowisko() {
@@ -127,7 +172,7 @@ export class Kadry extends Component{
         var p=0;
         this.state.stanowiska.map(s=> {
             
-            if(s.id_stanowisko==nr){
+            if(s.id_stanowisko==nr|| (s.pensja!=0 && s.pensja!=null)){
                 p=s.pensja;
                 h=(pay/p);
                 h=Math.round(h);
@@ -136,6 +181,25 @@ export class Kadry extends Component{
         
 
         return h;
+    }
+
+    editClick(id) {
+        this.addClick(5);
+    }
+
+    addClick(id) {
+        if(id==1)
+            this.setState({isAddModal: true});
+        else if(id==2)
+            this.setState({isAddModal: false});
+        else if(id==3)
+            this.setState({isStanModal: true});
+        else if(id==4)
+            this.setState({isStanModal: false});
+        else if(id==5)
+            this.setState({isEditModal: true});
+        else if(id==6)
+            this.setState({isEditModal: false});
     }
 
     getLogs() {
@@ -148,7 +212,6 @@ export class Kadry extends Component{
         .then(response => response.json())
         .then(data => {
             this.setState({ logi: data });
-            console.log(data);
         });
     }
 
@@ -159,11 +222,12 @@ export class Kadry extends Component{
     }
 
     render() {
-        var pensja;
+        var stawka;
         var godziny;
         var stanowisko;
         var wyplata;
         var lvl;
+        var ind=0;
         const {
             employees,
             id_pra,
@@ -172,16 +236,21 @@ export class Kadry extends Component{
             stanowiskostr,
             stanowiska,
             nazwa,
-            id_stanowisko
+            pensja,
+            lvl_dostepu,
+            id_stanowisko,
+            isAddModal,
+            isStanModal,
+            isEditModal
         } = this.state;
         return (
             <>
                 <aside className='app-sidebar'>
                     <ul>
-                        <li><button align="center" id='btn2'><span><img src={ic1} alt=""/></span>Dodaj pracownika</button></li>
+                        <li><button type="button" align="center" id='btn2' onClick={() => this.addClick(1)}><span><img src={ic1} alt=""/></span>Dodaj pracownika</button></li>
                         <li><button align="center" id='btn2'><span><img src={ic2} alt=""/></span>Filtruj</button></li>
                         <li><button align="center" id='btn2'><span><img src={ic3} alt=""/></span>Filtruj wg. daty</button></li>
-                        <li><button align="center" id='btn2'><span><img src={ic4} alt=""/></span>Zakończenie kontraktu</button></li>
+                        <li><button align="center" id='btn2' onClick={() => this.addClick(3)}><span><img src={ic1} alt=""/></span>Dodaj stanowisko</button></li>
                     </ul>
                 </aside>
                 <AppNav />
@@ -190,16 +259,16 @@ export class Kadry extends Component{
                     <thead>
                         <tr>
                             <th>
-                                Id Pracownika
+                                Id 
                             </th>
                             <th>
-                                Imie Nazwisko
+                                Imię, <br />Nazwisko
                             </th>
                             <th>
                                 Stanowisko
                             </th>
                             <th>
-                                Data zatrudnienia
+                                Data <br />zatrudnienia
                             </th>
                             <th>
                                 Stawka zasadnicza <br/>(godzinowa)
@@ -218,18 +287,102 @@ export class Kadry extends Component{
                     <tbody>
                         {employees.map(emp =>
                             <tr key={emp.id_pra}>
-                                <td>{emp.id_pra}</td>
+                                <td>{ind+=1}</td>
                                 <td>{emp.imie=this.nameFormat(emp.imie)}</td>
                                 <td>{stanowisko=this.stanowisko(emp.stanowiskostr)} </td>
                                 <td>{emp.data_zatr = emp.data_zatr.slice(0, 10)}</td>
-                                <td>{pensja=this.pensjaZasad(emp.stanowiskostr)} </td>
+                                <td>{stawka=this.pensjaZasad(emp.stanowiskostr)} </td>
                                 <td>{lvl=this.lvlDost(emp.stanowiskostr)} </td>
                                 <td>{wyplata=this.getPay(emp.imie)} </td>
                                 <td>{godziny=this.getHours(emp.stanowiskostr, wyplata)} </td>
+                                <td><button type="button"
+                                        className="delete-button"
+                                        onClick={() => this.deleteClick(emp.id_pra)}>
+                                    </button>
+                                </td>
+                                <td><button type="button"
+                                        className="edit-button"
+                                        onClick={() => this.editClick(emp.id_pra)}>
+                                        
+                                    </button>
+                                </td>
                             </tr>
                         )}
                     </tbody>
                 </table>
+                </div>
+                <div className='add-modal-overlay' style={{display: isAddModal ? 'block' : 'none',}}>
+                    <div className='add-modal-container' align="center">
+                        <div className='add-modal'>
+                            <h1 className='mod-title'>Dodaj pracownika</h1>
+                            <div>
+                            <input type="text" className='modal-input-text' placeholder="ImięNazwisko" value={imie} onChange={this.changeEmployeeName} />
+                            </div>
+                            <div>
+                            <select className="modal-select" defaultValue="null" onChange={this.changeEmployeeStan}>
+                                 <option disabled value="null">Wybierz stanowisko</option>
+                                {stanowiska.map(s =>
+                                     <option key={s.id_stanowisko} value={s.id_stanowisko}>
+                                        {s.nazwa} 
+                                     </option>)}
+                             </select>
+                            </div>
+                            <br />
+                            <button type="button" onClick={() => this.addEmployee()}>Dodaj</button>
+                            <br />
+                            <button type="button" onClick={() => this.addClick(2)}>Anuluj</button>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div className='stan-modal-overlay' style={{display: isStanModal ? 'block' : 'none',}}>
+                    <div className='stan-modal-container' align="center">
+                        <div className='stan-modal'>
+                            <h1 className='mod-title'>Dodaj stanowisko</h1>
+                            <div>
+                            <label for="nazwa">Wprowadź nazwę stanowiska: </label>
+                            <input type="text" className='modal-input-text' placeholder="Nazwa" value={nazwa}/>
+                            </div>
+                            <div>
+                            <label for="stawka">Wprowadź stawkę godzinową dla stanowiska: </label>
+                            <input type="number" className='modal-input-number' placeholder="Stawka" value={pensja}/>
+                            </div>
+                            <div>
+                            <label for="lvl">Wprowadź poziom dostępu stanowiska: </label>
+                            <input type="number" className='modal-input-number' placeholder="Poziom dostępu" value={lvl_dostepu}/>
+                            </div>
+                            <br />
+                            <button type="button" onClick={() => this.addStan()}>Dodaj</button>
+                            <br />
+                            <button type="button" onClick={() => this.addClick(4)}>Anuluj</button>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div className='edit-modal-overlay' style={{display: isEditModal ? 'block' : 'none',}}>
+                    <div className='edit-modal-container' align="center">
+                        <div className='edit-modal'>
+                            <h1 className='mod-title'>Zmień stanowisko pracownika</h1>
+                            <div>
+                            <label for="stan">Wybór nowego stanowiska: </label>
+                            <select className="modal-select" defaultValue="null" onChange={this.changeIdStanowisko}>
+                                 <option disabled value="null">Wybierz stanowisko</option>
+                                {stanowiska.map(s =>
+                                     <option key={s.id_stanowisko} value={s.id_stanowisko}>
+                                        {s.nazwa} 
+                                     </option>)}
+                             </select>
+                            </div>
+                            <br />
+                            <button type="button" onClick={() => this.editEmployee()}>Dodaj</button>
+                            <br />
+                            <button type="button" onClick={() => this.addClick(6)}>Anuluj</button>
+                        </div>
+
+                    </div>
+
                 </div>
                 
             </>

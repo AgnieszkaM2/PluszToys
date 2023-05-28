@@ -12,27 +12,24 @@ import { Zamowienia } from './components/Zamowienia';
 import { Settings } from './components/Settings';
 import { MainNav } from './components/MainNav';
 
-class App extends Component {
-  render() {
-    return (
-      <>
-      <MainNav />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/home_app" element={<HomeApp />} />
-        <Route path="/kadry" element={<Kadry />} />
-        <Route path="/magazyn" element={<Magazyn />} />
-        <Route path="/sprzedaz" element={<Sprzedaz />} />
-        <Route path="/zakupy" element={<ZakupyDostawy />} />
-        <Route path="/zamowienia" element={<Zamowienia />} />
-        <Route path="/settings" element={<Settings />} />
-      </Routes>
-  
-      </>
-    );
-  }
-  
+function App() {
+  return (
+    <>
+    <MainNav />
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/home_app" element={<HomeApp />} />
+      <Route path="/kadry" element={<Kadry />} />
+      <Route path="/magazyn" element={<Magazyn />} />
+      <Route path="/sprzedaz" element={<Sprzedaz />} />
+      <Route path="/zakupy" element={<ZakupyDostawy />} />
+      <Route path="/zamowienia" element={<Zamowienia />} />
+      <Route path="/settings" element={<Settings />} />
+    </Routes>
+
+    </>
+  );
 }
 
 export default App;

@@ -150,3 +150,5 @@ alter table zama drop column nr_zam;
 alter table listazamwie add FOREIGN key (nr_zam) REFERENCES zama(id_zam);
 
 alter table listazamwie drop column aktilosc;
+
+alter table pracownicy ADD CONSTRAINT p_haslo DEFAULT 'haslo' FOR haslo;
