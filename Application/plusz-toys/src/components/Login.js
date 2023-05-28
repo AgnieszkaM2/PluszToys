@@ -12,7 +12,7 @@ export function Login() {
             <form className='form' align='center'>
                 <div>
                     <img src={userImg} alt="" className='icon user' />
-                    <input type="email" className='mainInputStyle input' placeholder="Email or Username" />
+                    <input type="text" className='mainInputStyle input' placeholder="Username" />
                 </div>
                 <div>
                     <img src={passImg} alt="" className='icon pass' />
