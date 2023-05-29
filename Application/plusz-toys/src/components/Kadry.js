@@ -27,9 +27,11 @@ export class Kadry extends Component{
             logi: [],
             wyplata: "",
 
+            hours: 0,
             isAddModal:false,
             isStanModal:false,
-            isEditModal:false
+            isEditModal:false,
+            isAddLogsModal:false
 
         }
     }
@@ -64,11 +66,15 @@ export class Kadry extends Component{
         this.setState({ id_stanowisko: e.target.value });
     }
     changeStanowisko = (e) => {
-        this.setState({ stanowisko: e.target.value });
+        this.setState({ nazwa: e.target.value });
     }
-    changeIdStanowisko = (e) => {
-        this.setState({ id_stanowisko: e.target.value });
+    changePay = (e) => {
+        this.setState({ pensja: e.target.value });
     }
+    changeLvl = (e) => {
+        this.setState({ lvl_dostepu: e.target.value });
+    }
+
     refreshPage() {
         window.location.reload(false);
     }
@@ -81,6 +87,39 @@ export class Kadry extends Component{
             
 
         this.setState({imie: "", id_stanowisko:0});
+        this.refreshPage();
+    }
+
+    editEmployee() {
+        fetch('https://localhost:7223/api/pracownicyCON/zmiana_stanowisko '+ this.state.id_pra +'?stanowisko='+ this.state.id_stanowisko, {
+            method: 'PUT'
+        })
+            .then(res => res.json());
+            
+
+        this.setState({id_pra: 0, id_stanowisko:0});
+        this.refreshPage();
+    }
+
+    addLogs() {
+        fetch('https://localhost:7223/api/logipracyCON/ins_godziny?id='+ this.state.id_pra +'&godziny='+ this.state.hours, {
+            method: 'PUT'
+        })
+            .then(res => res.json());
+            
+
+        this.setState({id_pra: 0, hours:0});
+        this.refreshPage();
+    }
+
+    addStanowisko() {
+        fetch('https://localhost:7223/api/stanowiskoCON/'+ this.state.nazwa +'_'+ this.state.pensja +'_'+ this.state.lvl_dostepu, {
+            method: 'PUT'
+        })
+            .then(res => res.json());
+            
+
+        this.setState({nazwa: "", pensja: 0, lvl_dostepu: 0});
         this.refreshPage();
     }
 
@@ -117,10 +156,12 @@ export class Kadry extends Component{
             
             if(s.id_stanowisko==nr){
                 st=s.nazwa;
-            }
+            }  
         });
         
-
+        if(st===""){
+            st="Niezdefiniowane";
+        }
         return st;
     }
 
@@ -172,7 +213,7 @@ export class Kadry extends Component{
         var p=0;
         this.state.stanowiska.map(s=> {
             
-            if(s.id_stanowisko==nr|| (s.pensja!=0 && s.pensja!=null)){
+            if(s.id_stanowisko==nr && (s.pensja!=0 && s.pensja!=null)){
                 p=s.pensja;
                 h=(pay/p);
                 h=Math.round(h);
@@ -185,21 +226,38 @@ export class Kadry extends Component{
 
     editClick(id) {
         this.addClick(5);
+        this.setState({ id_pra: id });
+    }
+
+    logClick(id) {
+        this.addClick(7);
+        this.setState({ id_pra: id });
     }
 
     addClick(id) {
         if(id==1)
             this.setState({isAddModal: true});
-        else if(id==2)
+        else if(id==2){
             this.setState({isAddModal: false});
-        else if(id==3)
+            this.setState({imie: "", id_stanowisko:0});
+            document.getElementById('add-select').value = null;
+        }else if(id==3)
             this.setState({isStanModal: true});
-        else if(id==4)
+        else if(id==4){
             this.setState({isStanModal: false});
-        else if(id==5)
+            this.setState({nazwa: "", pensja: 0, lvl_dostepu: 0});
+        }else if(id==5)
             this.setState({isEditModal: true});
-        else if(id==6)
+        else if(id==6){
             this.setState({isEditModal: false});
+            this.setState({id_pra: 0, id_stanowisko:0});
+            document.getElementById('edit-select').value = null;
+        }else if(id==7)
+            this.setState({isAddLogsModal: true});
+        else if(id==8){
+            this.setState({isAddLogsModal: false});
+            this.setState({id_pra: 0, hours:0});
+        }   
     }
 
     getLogs() {
@@ -239,9 +297,11 @@ export class Kadry extends Component{
             pensja,
             lvl_dostepu,
             id_stanowisko,
+            hours,
             isAddModal,
             isStanModal,
-            isEditModal
+            isEditModal,
+            isAddLogsModal
         } = this.state;
         return (
             <>
@@ -297,12 +357,18 @@ export class Kadry extends Component{
                                 <td>{godziny=this.getHours(emp.stanowiskostr, wyplata)} </td>
                                 <td><button type="button"
                                         className="delete-button"
-                                        onClick={() => this.deleteClick(emp.id_pra)}>
+                                        onClick={() => this.deleteClick(emp.id_pra)}>Usuń
                                     </button>
                                 </td>
                                 <td><button type="button"
                                         className="edit-button"
-                                        onClick={() => this.editClick(emp.id_pra)}>
+                                        onClick={() => this.editClick(emp.id_pra)}>Edytuj stanowisko
+                                        
+                                    </button>
+                                </td>
+                                <td><button type="button"
+                                        className="edit-button"
+                                        onClick={() => this.logClick(emp.id_pra)}>Dodaj godziny
                                         
                                     </button>
                                 </td>
@@ -319,7 +385,7 @@ export class Kadry extends Component{
                             <input type="text" className='modal-input-text' placeholder="ImięNazwisko" value={imie} onChange={this.changeEmployeeName} />
                             </div>
                             <div>
-                            <select className="modal-select" defaultValue="null" onChange={this.changeEmployeeStan}>
+                            <select className="modal-select" id='add-select' defaultValue="null" onChange={this.changeEmployeeStan}>
                                  <option disabled value="null">Wybierz stanowisko</option>
                                 {stanowiska.map(s =>
                                      <option key={s.id_stanowisko} value={s.id_stanowisko}>
@@ -341,19 +407,19 @@ export class Kadry extends Component{
                         <div className='stan-modal'>
                             <h1 className='mod-title'>Dodaj stanowisko</h1>
                             <div>
-                            <label for="nazwa">Wprowadź nazwę stanowiska: </label>
-                            <input type="text" className='modal-input-text' placeholder="Nazwa" value={nazwa}/>
+                            <label htmlFor="nazwa">Wprowadź nazwę stanowiska: </label>
+                            <input type="text" className='modal-input-text' placeholder="Nazwa" value={nazwa} onChange={this.changeStanowisko}/>
                             </div>
                             <div>
-                            <label for="stawka">Wprowadź stawkę godzinową dla stanowiska: </label>
-                            <input type="number" className='modal-input-number' placeholder="Stawka" value={pensja}/>
+                            <label htmlFor="stawka">Wprowadź stawkę godzinową dla stanowiska: </label>
+                            <input type="number" className='modal-input-number' placeholder="Stawka" value={pensja} onChange={this.changePay}/>
                             </div>
                             <div>
-                            <label for="lvl">Wprowadź poziom dostępu stanowiska: </label>
-                            <input type="number" className='modal-input-number' placeholder="Poziom dostępu" value={lvl_dostepu}/>
+                            <label htmlFor="lvl">Wprowadź poziom dostępu stanowiska: </label>
+                            <input type="number" className='modal-input-number' placeholder="Poziom dostępu" value={lvl_dostepu} onChange={this.changeLvl}/>
                             </div>
                             <br />
-                            <button type="button" onClick={() => this.addStan()}>Dodaj</button>
+                            <button type="button" onClick={() => this.addStanowisko()}>Dodaj</button>
                             <br />
                             <button type="button" onClick={() => this.addClick(4)}>Anuluj</button>
                         </div>
@@ -366,8 +432,8 @@ export class Kadry extends Component{
                         <div className='edit-modal'>
                             <h1 className='mod-title'>Zmień stanowisko pracownika</h1>
                             <div>
-                            <label for="stan">Wybór nowego stanowiska: </label>
-                            <select className="modal-select" defaultValue="null" onChange={this.changeIdStanowisko}>
+                            <label htmlFor="stan">Wybór nowego stanowiska: </label>
+                            <select className="modal-select" id='edit-select' defaultValue="null" onChange={this.changeEmployeeStan}>
                                  <option disabled value="null">Wybierz stanowisko</option>
                                 {stanowiska.map(s =>
                                      <option key={s.id_stanowisko} value={s.id_stanowisko}>
@@ -376,9 +442,26 @@ export class Kadry extends Component{
                              </select>
                             </div>
                             <br />
-                            <button type="button" onClick={() => this.editEmployee()}>Dodaj</button>
+                            <button type="button" onClick={() => this.editEmployee()}>Zapisz</button>
                             <br />
                             <button type="button" onClick={() => this.addClick(6)}>Anuluj</button>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div className='add-modal-overlay' style={{display: isAddLogsModal ? 'block' : 'none',}}>
+                    <div className='add-modal-container' align="center">
+                        <div className='add-modal'>
+                            <h1 className='mod-title'>Dodaj godziny pracy pracownika dla danego miesiąca</h1>
+                            <div>
+                            <label htmlFor="log">Wprowadź ilość godzin, którą chcesz dodać: </label><br />
+                            <input type="number" className='modal-input-number' placeholder="Godziny" value={hours} onChange={(e) => this.setState({ hours: e.target.value })}/>
+                            </div>
+                            <br />
+                            <button type="button" onClick={() => this.addLogs()}>Dodaj</button>
+                            <br />
+                            <button type="button" onClick={() => this.addClick(8)}>Anuluj</button>
                         </div>
 
                     </div>

@@ -43,8 +43,8 @@ namespace Api.Controllers
         {
             SqlConnection _conn = new SqlConnection(_configuration.GetConnectionString("magazyn").ToString());
 
-            ;
-            string query = $"insert into listazamwie(nr_zam, material, wypelnienie, oczy, ilosc, stan, typ_plusza, wielkosc) values({nr_zam}, '{material}', '{wypelnienie}', '{oczy}', {ilosc}, 1, {typ_plusza}, '{wielkosc}'))";
+            
+            string query = $"insert into listazamwie(nr_zam, material, wypelnienie, oczy, ilosc, stan, typ_plusza, wielkosc) values({nr_zam}, '{material}', '{wypelnienie}', '{oczy}', {ilosc}, 1, {typ_plusza}, '{wielkosc}')";
 
             _conn.Open();
             SqlDataAdapter sqlDataAdapter = new SqlDataAdapter();
