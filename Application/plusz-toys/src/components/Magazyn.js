@@ -114,13 +114,13 @@ export class Magazyn extends Component{
                     <ul>
                         <li><button align="center" id='btn2' onClick={() => this.addClick(1)}><span><img src={ic1} alt=""/></span>Nowy produkt</button></li>
                         <li><button align="center" id='btn2'><span><img src={ic2} alt=""/></span>Filtruj</button></li>
-                        <li><button align="center" id='btn2'><span><img src={ic3} alt=""/></span>Zakończenie ważności</button></li>
+                        {/*}<li><button align="center" id='btn2'><span><img src={ic3} alt=""/></span>Zakończenie ważności</button></li>*/}
                     </ul>
                 </aside>
                 <AppNav />
                 <div>
-                <table className="table table-striped">
-                    <thead>
+                <table className="table-data">
+                    <thead id='head1'>
                         <tr>
                             <th>
                                 Id 
@@ -131,9 +131,12 @@ export class Magazyn extends Component{
                             <th>
                                 Typ produktu
                             </th>
+                            <th>
+                                
+                            </th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id='body1'>
                         {products.map(prod =>
                             <tr key={prod.Id}>
                                 <td>{ind+=1}</td>
@@ -154,9 +157,11 @@ export class Magazyn extends Component{
                         <div className='add-modal'>
                             <h1 className='mod-title'>Dodaj produkt</h1>
                             <div>
+                            <label htmlFor="log">Nazwa produktu: </label><br /><br />
                             <input type="text" className='modal-input-text' placeholder="Nazwa produktu" value={nazwa_p} onChange={(e) => this.setState({ nazwa_p: e.target.value })} />
                             </div>
-                            <div>
+                            <br />
+                            <div className='selecting2'>
                             <select className="modal-select" id='add-select' defaultValue="null" onChange={this.changeProductType}>
                                  <option disabled value="null">Wybierz typ</option>
                                 {types.map(t =>
@@ -166,9 +171,8 @@ export class Magazyn extends Component{
                              </select>
                             </div>
                             <br />
-                            <button type="button" onClick={() => this.addProduct()}>Dodaj</button>
-                            <br />
-                            <button type="button" onClick={() => this.addClick(2)}>Anuluj</button>
+                            <button type="button" id='accept' onClick={() => this.addProduct()}>Dodaj</button>
+                            <button type="button" id='reject' onClick={() => this.addClick(2)}>Anuluj</button>
                         </div>
 
                     </div>

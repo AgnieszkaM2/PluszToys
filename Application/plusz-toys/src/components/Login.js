@@ -59,7 +59,7 @@ export class Login extends Component{
     
 
 
-    logIn(e) {
+    logIn() {
         fetch('https://localhost:7223/api/pracownicyCON/login?login='+this.state.login+'&haslo='+this.state.password, {
             method: 'GET'
         })
@@ -80,9 +80,9 @@ export class Login extends Component{
                 this.setState({ lvl_dostepu: lvl });
                 this.setState({ id_pra: s.id_pra });
                 this.setState({ imie: this.state.login });
-                localStorage.setItem('userName', this.state.imie);
-                localStorage.setItem('userId', this.state.id_pra);
-                localStorage.setItem('userLvl', this.state.lvl_dostepu);
+                localStorage.setItem('userNamee', this.state.imie);
+                localStorage.setItem('userIdd', this.state.id_pra);
+                localStorage.setItem('userLvll', this.state.lvl_dostepu);
                 window.location.replace("/home_app");
             });
             
@@ -91,6 +91,7 @@ export class Login extends Component{
             this.setState({ message: true });
         };
     }
+    
 
     componentDidMount() {
         this.getStanowisko();
@@ -126,7 +127,7 @@ export class Login extends Component{
                         <img src={passImg} alt="" className='icon pass' />
                         <input type="password" className='mainInputStyle input' placeholder="Password" onChange={(e) => this.setState({ password: e.target.value })} />
                     </div>
-                    <button type="button" className='mainInputStyle loginBtn' onClick={(e) => this.logIn(e)}>Login</button>
+                    <button type="button" className='mainInputStyle loginBtn' onClick={() => this.logIn()}>Login</button>
                 </div>
                 </div>
     
@@ -137,7 +138,7 @@ export class Login extends Component{
                             <h1 className='mod-title'>Błędny login lub hasło</h1>
                             <br />
                             <div>
-                                <button type="button" className='login-failed' onClick={() => this.refreshPage()}>Spróbuj ponownie</button>
+                                <button type="button" id='reject' className='login-failed' onClick={() => this.refreshPage()}>Spróbuj ponownie</button>
                             </div>
                             
                         </div>

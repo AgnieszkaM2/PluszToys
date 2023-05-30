@@ -213,7 +213,7 @@ export class Kadry extends Component{
         var p=0;
         this.state.stanowiska.map(s=> {
             
-            if(s.id_stanowisko==nr && (s.pensja!=0 && s.pensja!=null)){
+            if(s.id_stanowisko==nr && (s.pensja!==0 && s.pensja!==null)){
                 p=s.pensja;
                 h=(pay/p);
                 h=Math.round(h);
@@ -315,8 +315,8 @@ export class Kadry extends Component{
                 </aside>
                 <AppNav />
                 <div>
-                <table className="table table-striped">
-                    <thead>
+                <table className="table-data">
+                    <thead id='head'>
                         <tr>
                             <th>
                                 Id 
@@ -342,9 +342,18 @@ export class Kadry extends Component{
                             <th>
                                 Godziny pracy <br/>(obecny miesiąc)
                             </th>
+                            <th>
+                                
+                            </th>
+                            <th>
+                                
+                            </th>
+                            <th>
+                                
+                            </th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id='body'>
                         {employees.map(emp =>
                             <tr key={emp.id_pra}>
                                 <td>{ind+=1}</td>
@@ -382,9 +391,10 @@ export class Kadry extends Component{
                         <div className='add-modal'>
                             <h1 className='mod-title'>Dodaj pracownika</h1>
                             <div>
+                            <label htmlFor="nazwa">Wprowadź imię i nazwisko pracownika: </label><br /><br />
                             <input type="text" className='modal-input-text' placeholder="ImięNazwisko" value={imie} onChange={this.changeEmployeeName} />
-                            </div>
-                            <div>
+                            </div><br />
+                            <div className='selecting2'>
                             <select className="modal-select" id='add-select' defaultValue="null" onChange={this.changeEmployeeStan}>
                                  <option disabled value="null">Wybierz stanowisko</option>
                                 {stanowiska.map(s =>
@@ -394,45 +404,45 @@ export class Kadry extends Component{
                              </select>
                             </div>
                             <br />
-                            <button type="button" onClick={() => this.addEmployee()}>Dodaj</button>
-                            <br />
-                            <button type="button" onClick={() => this.addClick(2)}>Anuluj</button>
+                            <button type="button" id='accept' onClick={() => this.addEmployee()}>Dodaj</button>
+
+                            <button type="button" id='reject' onClick={() => this.addClick(2)}>Anuluj</button>
                         </div>
 
                     </div>
 
                 </div>
-                <div className='stan-modal-overlay' style={{display: isStanModal ? 'block' : 'none',}}>
-                    <div className='stan-modal-container' align="center">
-                        <div className='stan-modal'>
+                <div className='add-modal-overlay' style={{display: isStanModal ? 'block' : 'none',}}>
+                    <div className='add-modal-container' align="center">
+                        <div className='add-modal'>
                             <h1 className='mod-title'>Dodaj stanowisko</h1>
                             <div>
-                            <label htmlFor="nazwa">Wprowadź nazwę stanowiska: </label>
+                            <label htmlFor="nazwa">Wprowadź nazwę stanowiska: </label><br /><br />
                             <input type="text" className='modal-input-text' placeholder="Nazwa" value={nazwa} onChange={this.changeStanowisko}/>
                             </div>
                             <div>
-                            <label htmlFor="stawka">Wprowadź stawkę godzinową dla stanowiska: </label>
+                            <label htmlFor="stawka">Wprowadź stawkę godzinową dla stanowiska: </label><br /><br />
                             <input type="number" className='modal-input-number' placeholder="Stawka" value={pensja} onChange={this.changePay}/>
                             </div>
                             <div>
-                            <label htmlFor="lvl">Wprowadź poziom dostępu stanowiska: </label>
+                            <label htmlFor="lvl">Wprowadź poziom dostępu stanowiska: </label><br /><br />
                             <input type="number" className='modal-input-number' placeholder="Poziom dostępu" value={lvl_dostepu} onChange={this.changeLvl}/>
                             </div>
                             <br />
-                            <button type="button" onClick={() => this.addStanowisko()}>Dodaj</button>
-                            <br />
-                            <button type="button" onClick={() => this.addClick(4)}>Anuluj</button>
+                            <button type="button" id='accept' onClick={() => this.addStanowisko()}>Dodaj</button>
+
+                            <button type="button" id='reject' onClick={() => this.addClick(4)}>Anuluj</button>
                         </div>
 
                     </div>
 
                 </div>
-                <div className='edit-modal-overlay' style={{display: isEditModal ? 'block' : 'none',}}>
-                    <div className='edit-modal-container' align="center">
-                        <div className='edit-modal'>
+                <div className='add-modal-overlay' style={{display: isEditModal ? 'block' : 'none',}}>
+                    <div className='add-modal-container' align="center">
+                        <div className='add-modal'>
                             <h1 className='mod-title'>Zmień stanowisko pracownika</h1>
-                            <div>
-                            <label htmlFor="stan">Wybór nowego stanowiska: </label>
+                            <div className='selecting2'>
+                            <label htmlFor="stan">Wybór nowego stanowiska: </label><br /><br />
                             <select className="modal-select" id='edit-select' defaultValue="null" onChange={this.changeEmployeeStan}>
                                  <option disabled value="null">Wybierz stanowisko</option>
                                 {stanowiska.map(s =>
@@ -442,9 +452,8 @@ export class Kadry extends Component{
                              </select>
                             </div>
                             <br />
-                            <button type="button" onClick={() => this.editEmployee()}>Zapisz</button>
-                            <br />
-                            <button type="button" onClick={() => this.addClick(6)}>Anuluj</button>
+                            <button type="button" id='accept' onClick={() => this.editEmployee()}>Zapisz</button>
+                            <button type="button" id='reject' onClick={() => this.addClick(6)}>Anuluj</button>
                         </div>
 
                     </div>
@@ -455,13 +464,12 @@ export class Kadry extends Component{
                         <div className='add-modal'>
                             <h1 className='mod-title'>Dodaj godziny pracy pracownika dla danego miesiąca</h1>
                             <div>
-                            <label htmlFor="log">Wprowadź ilość godzin, którą chcesz dodać: </label><br />
+                            <label htmlFor="log">Wprowadź ilość godzin, którą chcesz dodać: </label><br /><br />
                             <input type="number" className='modal-input-number' placeholder="Godziny" value={hours} onChange={(e) => this.setState({ hours: e.target.value })}/>
                             </div>
                             <br />
-                            <button type="button" onClick={() => this.addLogs()}>Dodaj</button>
-                            <br />
-                            <button type="button" onClick={() => this.addClick(8)}>Anuluj</button>
+                            <button type="button" id='accept' onClick={() => this.addLogs()}>Dodaj</button>
+                            <button type="button" id='reject' onClick={() => this.addClick(8)}>Anuluj</button>
                         </div>
 
                     </div>

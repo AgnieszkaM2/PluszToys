@@ -204,8 +204,8 @@ export class Sprzedaz extends Component{
                 </aside>
                 <AppNav />
                 <div>
-                <table className="table table-striped">
-                    <thead>
+                <table className="table-data">
+                    <thead id='head1'>
                         <tr>
                             <th>
                                 Id 
@@ -219,9 +219,12 @@ export class Sprzedaz extends Component{
                             <th>
                                 Stan zamówienia
                             </th>
+                            <th>
+                                
+                            </th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id='body1'>
                         {orders.map(o =>
                             <tr key={o.id_zam}>
                                 <td>{o.id_zam}</td>
@@ -243,66 +246,67 @@ export class Sprzedaz extends Component{
                         <div className='add-modal'>
                             <h1 className='mod-title'>Dodaj sprzedaż</h1>
                             <div>
+                            <label htmlFor="nr">Nowy klient: </label><br /><br />
                             <input type="text" className='modal-input-text' placeholder="Klient" value={klient} onChange={(e) => this.setState({ klient: e.target.value })} />
                             </div>
                             <br />
-                            <button type="button" onClick={() => this.addOrder()}>Dodaj</button>
-                            <br />
-                            <button type="button" onClick={() => this.addClick(2)}>Anuluj</button>
+                            <button type="button" id='accept' onClick={() => this.addOrder()}>Dodaj</button>
+                            <button type="button" id='reject' onClick={() => this.addClick(2)}>Anuluj</button>
                         </div>
 
                     </div>
 
                 </div>
-                <div className='add-modal-overlay' style={{display: isAddOrderDetModal ? 'block' : 'none',}}>
-                    <div className='add-modal-container' align="center">
+                <div className='add-modal-overlay-z' style={{display: isAddOrderDetModal ? 'block' : 'none',}}>
+                    <div className='add-modal-container-z' align="center">
                         <div className='add-modal'>
                             <h1 className='mod-title'>Dodaj zamówienie</h1>
                             <div>
-                            <label htmlFor="nr">Nr zamówienia: </label><br />
+                            <label htmlFor="nr">Nr zamówienia: </label><br /><br />
                             <input type="number" className='modal-input-number' disabled placeholder="Nr zamówienia" value={numer=this.getNextId()}/>
                             </div>
                             <div>
-                            <label htmlFor="mat">Materiał: </label><br />
+                            <label htmlFor="mat">Materiał: </label><br /><br />
                             <input type="text" className='modal-input-text' placeholder="Materiał" value={material} onChange={(e) => this.setState({ material: e.target.value })} />
                             </div>
                             <div>
-                            <label htmlFor="wyp">Wypełnienie: </label><br />
+                            <label htmlFor="wyp">Wypełnienie: </label><br /><br />
                             <input type="text" className='modal-input-text' placeholder="Wypełnienie" value={wypelnienie} onChange={(e) => this.setState({ wypelnienie: e.target.value })} />
                             </div>
                             <div>
-                            <label htmlFor="oczy">Oczy: </label><br />
+                            <label htmlFor="oczy">Oczy: </label><br /><br />
                             <input type="text" className='modal-input-text' placeholder="Oczy" value={oczy} onChange={(e) => this.setState({ oczy: e.target.value })} />
                             </div>
                             <div>
-                            <label htmlFor="ilosc">Ilość: </label><br />
+                            <label htmlFor="ilosc">Ilość: </label><br /><br />
                             <input type="number" className='modal-input-number' placeholder="Ilość" value={ilosc} onChange={(e) => this.setState({ ilosc: e.target.value })}/>
                             </div>
-                            <div>
-                            <select className="modal-select" id='add-select' defaultValue="null" onChange={(e) => this.setState({ typ_plusza: e.target.value })}>
-                                 <option disabled value="null">Wybierz typ</option>
-                                 <option value="1">Kot</option>
-                                 <option value="2">Pies</option>
-                                 <option value="3">Słoń</option>
-                                 <option value="4">Miś</option>
-                             </select>
-                            </div>
-                            <div>
-                            <select className="modal-select" id='add-select' defaultValue="null" onChange={(e) => this.setState({ wielkosc: e.target.value })}>
-                                 <option disabled value="null">Wybierz rozmiar</option>
-                                 <option value="S">S</option>
-                                 <option value="M">M</option>
-                                 <option value="L">L</option>
-                                 <option value="XL">XL</option>
-                                 <option value="2XL">2XL</option>
-                                 <option value="3XL">3XL</option>
-                                 <option value="4XL">4XL</option>
-                             </select>
+                            <br />
+                            <div className='selecting2'>
+                                <select className="modal-select" id='add-select' defaultValue="null" onChange={(e) => this.setState({ typ_plusza: e.target.value })}>
+                                    <option disabled value="null">Wybierz typ</option>
+                                    <option value="1">Kot</option>
+                                    <option value="2">Pies</option>
+                                    <option value="3">Słoń</option>
+                                    <option value="4">Miś</option>
+                                </select>
                             </div>
                             <br />
-                            <button type="button" onClick={() => this.addOrderDet()}>Dodaj</button>
+                            <div className='selecting2'>
+                                <select className="modal-select" id='add-select' defaultValue="null" onChange={(e) => this.setState({ wielkosc: e.target.value })}>
+                                    <option disabled value="null">Wybierz rozmiar</option>
+                                    <option value="S">S</option>
+                                    <option value="M">M</option>
+                                    <option value="L">L</option>
+                                    <option value="XL">XL</option>
+                                    <option value="2XL">2XL</option>
+                                    <option value="3XL">3XL</option>
+                                    <option value="4XL">4XL</option>
+                                </select>
+                            </div>
                             <br />
-                            <button type="button" onClick={() => this.addClick(4)}>Anuluj</button>
+                            <button type="button" id='accept' onClick={() => this.addOrderDet()}>Dodaj</button>
+                            <button type="button" id='reject' onClick={() => this.addClick(4)}>Anuluj</button>
                         </div>
 
                     </div>
@@ -313,7 +317,7 @@ export class Sprzedaz extends Component{
                         <div className='add-modal'>
                             <h1 className='mod-title'>Zmień stan zamówienia</h1>
                            
-                            <div>
+                            <div className='selecting2'>
                             <select className="modal-select" id='add-select' defaultValue="null" onChange={(e) => this.setState({ stan: e.target.value })}>
                                  <option disabled value="null">Wybierz stan</option>
                                  <option value="1">start</option>
@@ -323,9 +327,8 @@ export class Sprzedaz extends Component{
                              </select>
                             </div>
                             <br />
-                            <button type="button" onClick={() => this.editOrder()}>Zapisz</button>
-                            <br />
-                            <button type="button" onClick={() => this.addClick(6)}>Anuluj</button>
+                            <button type="button" id='accept' onClick={() => this.editOrder()}>Zapisz</button>
+                            <button type="button" id='reject' onClick={() => this.addClick(6)}>Anuluj</button>
                         </div>
 
                     </div>
