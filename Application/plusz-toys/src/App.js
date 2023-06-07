@@ -11,6 +11,7 @@ import { ZakupyDostawy } from './components/ZakupyDostawy';
 import { Zamowienia } from './components/Zamowienia';
 import { Settings } from './components/Settings';
 import { MainNav } from './components/MainNav';
+import { ProtectedRoutes } from './ProtectedRoutes'
 
 function App() {
   return (
@@ -18,14 +19,16 @@ function App() {
     <MainNav />
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/home_app" element={<HomeApp />} />
-      <Route path="/kadry" element={<Kadry />} />
-      <Route path="/magazyn" element={<Magazyn />} />
-      <Route path="/sprzedaz" element={<Sprzedaz />} />
-      <Route path="/zakupy" element={<ZakupyDostawy />} />
-      <Route path="/zamowienia" element={<Zamowienia />} />
-      <Route path="/settings" element={<Settings />} />
+      <Route element={<ProtectedRoutes />}>
+        <Route path="/login" element={<HomeApp />} />
+        <Route path="/home_app" element={<HomeApp />} />
+        <Route path="/kadry" element={<Kadry />} />
+        <Route path="/magazyn" element={<Magazyn />} />
+        <Route path="/sprzedaz" element={<Sprzedaz />} />
+        <Route path="/zakupy" element={<ZakupyDostawy />} />
+        <Route path="/zamowienia" element={<Zamowienia />} />
+        <Route path="/settings" element={<Settings />} />
+      </Route>
     </Routes>
 
     </>

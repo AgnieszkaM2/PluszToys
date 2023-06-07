@@ -216,6 +216,15 @@ body {
     padding:15px;
     font-size: 20px;
 }
+.add-modal input[type=password]{
+    background-color: #00395592;
+    text-align: center;
+    color:white;
+    border-radius: 10px;
+    border: 1px solid white;
+    padding:15px;
+    font-size: 20px;
+}
 .add-modal input[type=number]{
     background-color: #00395592;
     text-align: center;

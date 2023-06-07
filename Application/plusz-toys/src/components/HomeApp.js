@@ -34,9 +34,9 @@ export class HomeApp extends Component{
         let name;
         let id=0;
         let lvl=0;
-        name=localStorage.getItem('userNamee');
-        id=localStorage.getItem('userIdd');
-        lvl=localStorage.getItem('userLvll');
+        name=localStorage.getItem('userName');
+        id=localStorage.getItem('userId');
+        lvl=localStorage.getItem('userLvl');
         name=this.nameFormat(name);
         id=Number(id);
         lvl=Number(lvl);
@@ -48,8 +48,7 @@ export class HomeApp extends Component{
     addLogs() {
         fetch('https://localhost:7223/api/logipracyCON/ins_godziny?id='+ this.state.employeeId +'&godziny='+ this.state.hours, {
             method: 'PUT'
-        })
-            .then(res => res.json());
+        });
             
 
         this.setState({hours:0});
@@ -90,6 +89,7 @@ export class HomeApp extends Component{
                     <div>
                         
                         <h2 align="center" >Użytkownik : {employeeName}</h2>
+
                     </div> 
                     <div className='add-modal-overlay' style={{display: isAddLogsModal ? 'block' : 'none',}}>
                     <div className='add-modal-container' align="center">

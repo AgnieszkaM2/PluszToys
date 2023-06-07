@@ -105,7 +105,6 @@ export class Kadry extends Component{
         fetch('https://localhost:7223/api/logipracyCON/ins_godziny?id='+ this.state.id_pra +'&godziny='+ this.state.hours, {
             method: 'PUT'
         })
-            .then(res => res.json());
             
 
         this.setState({id_pra: 0, hours:0});
@@ -195,12 +194,16 @@ export class Kadry extends Component{
 
     getPay(name) {
         var p=0;
-        this.state.logi.map(l=> {
+        console.log("ogolne: "+name);
+        if(this.state.logi!==null){
+            this.state.logi.map(l=> {
             
-            if(l.imie===name){
-                p=l.wyplata;
-            }
-        });
+                if(l.imie==name){
+                    p=l.wyplata;
+                }
+            });
+        }
+        
         
 
         return p;
@@ -266,6 +269,7 @@ export class Kadry extends Component{
 
         fetch('https://localhost:7223/api/logipracyCON?miesiec=' + month, {
             method: 'GET',
+
         })
         .then(response => response.json())
         .then(data => {
@@ -286,6 +290,7 @@ export class Kadry extends Component{
         var wyplata;
         var lvl;
         var ind=0;
+        var formattedName="";
         const {
             employees,
             id_pra,
@@ -357,7 +362,7 @@ export class Kadry extends Component{
                         {employees.map(emp =>
                             <tr key={emp.id_pra}>
                                 <td>{ind+=1}</td>
-                                <td>{emp.imie=this.nameFormat(emp.imie)}</td>
+                                <td>{formattedName=this.nameFormat(emp.imie)}</td>
                                 <td>{stanowisko=this.stanowisko(emp.stanowiskostr)} </td>
                                 <td>{emp.data_zatr = emp.data_zatr.slice(0, 10)}</td>
                                 <td>{stawka=this.pensjaZasad(emp.stanowiskostr)} </td>
