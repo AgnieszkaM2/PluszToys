@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Newtonsoft.Json;
 using System.Data;
+using System.Net;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -134,17 +135,44 @@ namespace Api.Controllers
         }
         // update api/<pracownicyCON>/7
         [HttpPut("update_password")]
-        public void zmianahasla(int id, string starehaslo,string nowehaslo)
+        public HttpResponseMessage zmianahasla(int id, string starehaslo,string nowehaslo)
         {
+            HttpRequestMessage request;
             SqlConnection _conn = new SqlConnection(_configuration.GetConnectionString("magazyn").ToString());
-
-            string query = $"update pracownicy set haslo = '{nowehaslo}' where id_pra = {id} and haslo = '{starehaslo}'";
-
             _conn.Open();
-            SqlDataAdapter sqlDataAdapter = new SqlDataAdapter();
-            sqlDataAdapter.UpdateCommand = new SqlCommand(query, _conn);
-            sqlDataAdapter.UpdateCommand.ExecuteNonQuery();
-            _conn.Close();
+
+            string query = $"select* from pracownicy where id_pra = {id} and haslo = '{starehaslo}'";
+
+            SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(query, _conn);
+            DataTable dt = new DataTable();
+            sqlDataAdapter.Fill(dt);
+            List<pracownicy> pracownicylist = new List<pracownicy>();
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    pracownicy pracownicy = new pracownicy();
+                    pracownicy.id_pra = Convert.ToInt16(row["id_pra"]);
+                    pracownicylist.Add(pracownicy);
+                }
+
+            }
+            if (pracownicylist.Count > 0)
+            {
+                query = $"update pracownicy set haslo = '{nowehaslo}' where id_pra = {id} and haslo = '{starehaslo}'";
+                sqlDataAdapter.UpdateCommand = new SqlCommand(query, _conn);
+                sqlDataAdapter.UpdateCommand.ExecuteNonQuery();
+                _conn.Close();
+                return new HttpResponseMessage(HttpStatusCode.OK);
+            }
+            else
+            {
+                _conn.Close();
+                return new HttpResponseMessage(HttpStatusCode.NotModified);
+            }
+
+
+            
         }
     }
 }
