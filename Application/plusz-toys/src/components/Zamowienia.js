@@ -133,9 +133,9 @@ export class Zamowienia extends Component{
                 <aside className='app-sidebar'>
                     <ul>
                         <li><button align="center" id='btn2' onClick={() => this.addClick(3)}><span><img src={ic1} alt=""/></span>Nowe zamówienie</button></li>
-                        <li><button align="center" id='btn2'><span><img src={ic2} alt=""/></span>Filtruj</button></li>
+                        {/*<li><button align="center" id='btn2'><span><img src={ic2} alt=""/></span>Filtruj</button></li>
                         <li><button align="center" id='btn2'><span><img src={ic3} alt=""/></span>Filtruj wg. daty</button></li>
-                        {/*<li><button align="center" id='btn2'><span><img src={ic4} alt=""/></span>Zakończenie zamówienia</button></li>*/}
+                        <li><button align="center" id='btn2'><span><img src={ic4} alt=""/></span>Zakończenie zamówienia</button></li>*/}
                     </ul>
                 </aside>
                 <AppNav />

@@ -20,7 +20,11 @@ export class Magazyn extends Component{
             id_t: 0,
             type_t:"",
 
-            isAddModal:false
+            isAddModal:false,
+            isFilterName:false,
+            isFilterType:false,
+            nameFilter:"",
+            typeFilter:""
 
         }
     }
@@ -90,6 +94,24 @@ export class Magazyn extends Component{
         }
     }
 
+    filterName() {
+        const filtered = this.state.products.filter(product => {
+            return (product.nazwa).includes(this.state.nameFilter);
+            
+        });
+        this.setState({products:filtered});
+        this.setState({isFilterName:false});
+    }
+    filterType() {
+        const filtered = this.state.products.filter(product => {
+            return product.type == this.state.typeFilter;
+            
+        });
+        this.setState({products:filtered});
+        this.setState({isFilterType:false});
+
+    }
+
     componentDidMount() {
         this.getProducts();
         this.getTypes();
@@ -106,15 +128,20 @@ export class Magazyn extends Component{
             types,
             id_t,
             type_t,
-            isAddModal
+            isAddModal,
+            isFilterName,
+            isFilterType,
+            nameFilter,
+            typeFilter
         } = this.state;
         return (
             <>
                 <aside className='app-sidebar'>
                     <ul>
                         <li><button align="center" id='btn2' onClick={() => this.addClick(1)}><span><img src={ic1} alt=""/></span>Nowy produkt</button></li>
-                        <li><button align="center" id='btn2'><span><img src={ic2} alt=""/></span>Filtruj</button></li>
-                        {/*}<li><button align="center" id='btn2'><span><img src={ic3} alt=""/></span>Zakończenie ważności</button></li>*/}
+                        <li><button align="center" id='btn2' onClick={()=>this.setState({isFilterName:true})}><span><img src={ic2} alt=""/></span>Filtruj wg. nazwy</button></li>
+                        <li><button align="center" id='btn2' onClick={()=>this.setState({isFilterType:true})}><span><img src={ic2} alt=""/></span>Filtruj wg. typu</button></li>
+                        <li><button align="center" id='btn2' onClick={()=>this.getProducts()}><span><img src={ic2} alt=""/></span>Resetuj filtry</button></li>
                     </ul>
                 </aside>
                 <AppNav />
@@ -173,6 +200,45 @@ export class Magazyn extends Component{
                             <br />
                             <button type="button" id='accept' onClick={() => this.addProduct()}>Dodaj</button>
                             <button type="button" id='reject' onClick={() => this.addClick(2)}>Anuluj</button>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div className='add-modal-overlay' style={{display: isFilterName ? 'block' : 'none',}}>
+                    <div className='add-modal-container' align="center">
+                        <div className='add-modal'>
+                            <h1 className='mod-title'>Filtruj</h1>
+                            <div>
+                            <label htmlFor="nazwa">Wprowadź nazwę: </label><br /><br />
+                            <input type="text" className='modal-input-text' placeholder="Nazwa" value={nameFilter} onChange={(e) => this.setState({ nameFilter: e.target.value })} />
+                            </div>
+                            <br />
+                            <button type="button" id='accept' onClick={() => this.filterName()}>Filtruj</button>
+
+                            <button type="button" id='reject' onClick={() => this.setState({isFilterName:false})}>Anuluj</button>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div className='add-modal-overlay' style={{display: isFilterType ? 'block' : 'none',}}>
+                    <div className='add-modal-container' align="center">
+                        <div className='add-modal'>
+                            <h1 className='mod-title'>Filtruj</h1>
+                            <div className='selecting2'>
+                            <select className="modal-select" id='add-select' defaultValue="null" onChange={(e) => this.setState({ typeFilter: e.target.value })}>
+                            <option disabled value="null">Wybierz typ</option>
+                                {types.map(t =>
+                                     <option key={t.Id} value={t.type}>
+                                        {t.type} 
+                                     </option>)}
+                             </select>
+                            </div>
+                            <br />
+                            <button type="button" id='accept' onClick={() => this.filterType()}>Filtruj</button>
+
+                            <button type="button" id='reject' onClick={() => this.setState({isFilterStan:false})}>Anuluj</button>
                         </div>
 
                     </div>

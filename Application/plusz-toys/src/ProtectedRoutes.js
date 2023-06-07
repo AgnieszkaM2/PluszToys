@@ -18,10 +18,18 @@ const auth = () => {
     }
 
 
-    return user && user.loggedIn;
+    return user;
 }
 
 export const ProtectedRoutes = () => {
     const isAuth = auth();
-    return isAuth ? <Outlet /> : <Login />;
+    return isAuth.loggedIn ? <Outlet /> : <Login />;
 }
+
+/*
+Poziomy dostępu:
+1-3 - pracownik zwykły - dostęp: magazyn, zamówienia, strony główne, ustawienia;
+4-5 - pracownik biurowy - dostęp: magazyn, zamówienia, sprzedaż, zakupy, strony główne, ustawienia;
+6 - hr - dostęp: kadry, strony główne, ustawienia;
+7 i wzwyż - kierownicy/administratorzy - dostęp: bez ograniczeń;
+*/

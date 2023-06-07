@@ -31,10 +31,19 @@ export class Kadry extends Component{
             isAddModal:false,
             isStanModal:false,
             isEditModal:false,
-            isAddLogsModal:false
+            isAddLogsModal:false,
+            isFilterName:false,
+            isFilterStan:false,
+            isFilterLvl:false,
+            nameFilter:"",
+            stanFilter:0,
+            lvlFilter:0,
+            filtered:[]
+
 
         }
     }
+    
 
     nameFormat(name) {
         var n = name;
@@ -277,6 +286,32 @@ export class Kadry extends Component{
         });
     }
 
+    filterName() {
+        const filtered = this.state.employees.filter(employee => {
+            return (employee.imie).includes(this.state.nameFilter);
+            
+        });
+        this.setState({employees:filtered});
+        this.setState({isFilterName:false});
+    }
+    filterStan() {
+        const filtered = this.state.employees.filter(employee => {
+            return employee.stanowiskostr == this.state.stanFilter;
+            
+        });
+        this.setState({employees:filtered});
+        this.setState({isFilterStan:false});
+
+    }
+    filterLvl() {
+        const filtered = this.state.employees.filter(employee => {
+            return this.lvlDost(employee.stanowiskostr) == this.state.lvlFilter;
+            
+        });
+        this.setState({employees:filtered});
+        this.setState({isFilterLvl:false});
+    }
+
     componentDidMount() {
         this.refreshList();
         this.getStanowisko();
@@ -306,15 +341,23 @@ export class Kadry extends Component{
             isAddModal,
             isStanModal,
             isEditModal,
-            isAddLogsModal
+            isAddLogsModal,
+            isFilterName,
+            isFilterStan,
+            isFilterLvl,
+            nameFilter,
+            stanFilter,
+            lvlFilter
         } = this.state;
         return (
             <>
                 <aside className='app-sidebar'>
                     <ul>
                         <li><button type="button" align="center" id='btn2' onClick={() => this.addClick(1)}><span><img src={ic1} alt=""/></span>Dodaj pracownika</button></li>
-                        <li><button align="center" id='btn2'><span><img src={ic2} alt=""/></span>Filtruj</button></li>
-                        <li><button align="center" id='btn2'><span><img src={ic3} alt=""/></span>Filtruj wg. daty</button></li>
+                        <li><button align="center" id='btn2' onClick={()=>this.setState({isFilterName:true})}><span><img src={ic2} alt=""/></span>Filtruj wg. imienia</button></li>
+                        <li><button align="center" id='btn2' onClick={()=>this.setState({isFilterStan:true})}><span><img src={ic2} alt=""/></span>Filtruj wg. stanowiska</button></li>
+                        <li><button align="center" id='btn2' onClick={()=>this.setState({isFilterLvl:true})}><span><img src={ic2} alt=""/></span>Filtruj wg. poziomu dostępu</button></li>
+                        <li><button align="center" id='btn2' onClick={()=>this.refreshList()}><span><img src={ic2} alt=""/></span>Resetuj filtry</button></li>
                         <li><button align="center" id='btn2' onClick={() => this.addClick(3)}><span><img src={ic1} alt=""/></span>Dodaj stanowisko</button></li>
                     </ul>
                 </aside>
@@ -475,6 +518,62 @@ export class Kadry extends Component{
                             <br />
                             <button type="button" id='accept' onClick={() => this.addLogs()}>Dodaj</button>
                             <button type="button" id='reject' onClick={() => this.addClick(8)}>Anuluj</button>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div className='add-modal-overlay' style={{display: isFilterName ? 'block' : 'none',}}>
+                    <div className='add-modal-container' align="center">
+                        <div className='add-modal'>
+                            <h1 className='mod-title'>Filtruj</h1>
+                            <div>
+                            <label htmlFor="nazwa">Wprowadź imię: </label><br /><br />
+                            <input type="text" className='modal-input-text' placeholder="ImięNazwisko" value={nameFilter} onChange={(e) => this.setState({ nameFilter: e.target.value })} />
+                            </div>
+                            <br />
+                            <button type="button" id='accept' onClick={() => this.filterName()}>Filtruj</button>
+
+                            <button type="button" id='reject' onClick={() => this.setState({isFilterName:false})}>Anuluj</button>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div className='add-modal-overlay' style={{display: isFilterStan ? 'block' : 'none',}}>
+                    <div className='add-modal-container' align="center">
+                        <div className='add-modal'>
+                            <h1 className='mod-title'>Filtruj</h1>
+                            <div className='selecting2'>
+                            <select className="modal-select" id='add-select' defaultValue="null" onChange={(e) => this.setState({ stanFilter: e.target.value })}>
+                                 <option disabled value="null">Wybierz stanowisko</option>
+                                {stanowiska.map(s =>
+                                     <option key={s.id_stanowisko} value={s.id_stanowisko}>
+                                        {s.nazwa} 
+                                     </option>)}
+                             </select>
+                            </div>
+                            <br />
+                            <button type="button" id='accept' onClick={() => this.filterStan()}>Filtruj</button>
+
+                            <button type="button" id='reject' onClick={() => this.setState({isFilterStan:false})}>Anuluj</button>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div className='add-modal-overlay' style={{display: isFilterLvl ? 'block' : 'none',}}>
+                    <div className='add-modal-container' align="center">
+                        <div className='add-modal'>
+                            <h1 className='mod-title'>Filtruj</h1>
+                            <div>
+                            <label htmlFor="log">Wprowadź poziom dostępu: </label><br /><br />
+                            <input type="number" className='modal-input-number' placeholder="Poziom" value={lvlFilter} onChange={(e) => this.setState({ lvlFilter: e.target.value })}/>
+                            </div>
+                            <br />
+                            <button type="button" id='accept' onClick={() => this.filterLvl()}>Filtruj</button>
+
+                            <button type="button" id='reject' onClick={() => this.setState({isFilterLvl:false})}>Anuluj</button>
                         </div>
 
                     </div>

@@ -35,8 +35,15 @@ export function Settings() {
         fetch('https://localhost:7223/api/pracownicyCON/update_password?id='+userId+'&starehaslo='+oldPass+'&nowehaslo='+newPass, {
             method: 'PUT'
         })
-            .then(response => {
-                if(response.ok) {
+            .then((response) => {
+                return response.json()
+            })
+            .then((json) => {
+                let code=0;
+                console.log(json.statusCode);
+                code=json.statusCode;
+                console.log(code);
+                if(code==200) {
                     alert("Hasło zmienione poprawnie. Zaloguj się ponownie");
                     localStorage.setItem('userName', "none");
                     localStorage.setItem('userId', "none");
@@ -47,7 +54,7 @@ export function Settings() {
                     alert("Błąd przy zmianie hasła. Spróbuj ponownie");
                     refreshPage();
                 }
-            })
+            });
     }
 
     function changePass() {
@@ -68,16 +75,17 @@ export function Settings() {
         <>
             <div className='app-wrap'>
               <h1 align="center">Ustawienia</h1> 
-              <br />
+              <br /><br /><br /><hr style={{width:650}} /><br /><br />
               <div align="center">
                  <button id='reject' onClick={()=>logOut()}>Wyloguj</button>
               </div> 
-              <br />
-              <hr />
+              <br /><br />
+              <hr style={{width:850}} /><br />
               <br />
               <div align="center">
               <button id='accept' onClick={()=>setModal(true)}>Zmień hasło</button>
               </div>
+              <br /><br /><hr style={{width:1000}} />
               <div className='add-modal-overlay' style={{display: isModal ? 'block' : 'none',}}>
                     <div className='add-modal-container' align="center">
                         <div className='add-modal'>

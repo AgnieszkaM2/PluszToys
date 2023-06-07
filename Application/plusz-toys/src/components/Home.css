@@ -41,3 +41,16 @@
     width:20%;
     height:20%;
 }
+ .main-home-wrap {
+    background-image: url('../assests/toys.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    position:absolute;
+    width: 800px;
+    height: 550px;
+    top:15vh;
+    left:65vh;
+    border-radius: 40px;
+    font-size: 40px;
+ }
